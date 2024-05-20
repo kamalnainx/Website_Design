@@ -1,0 +1,19 @@
+*{
+    padding: 0px;
+    margin: 0px;
+    
+}
+
+img{
+
+}
+
+.imgclass1{
+    width: 100%;
+    height: auto;
+}
+
+#imgid1{
+    width: 50%;
+    height: 500px;
+}
