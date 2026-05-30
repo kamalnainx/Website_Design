@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery 24/7</title>
+    <link rel="stylesheet" href="CSS/styles.css">
+    <style>
+        /* Style for product images */
+        .product-image {
+            width: 100%; /* Makes the image responsive */
+            max-width: 300px; /* Set a maximum width to avoid large images */
+            height: auto; /* Maintain the aspect ratio of the image */
+            object-fit: auto; /* Ensures the image fits well within the container without distortion */
+        }
+
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .product-item {
+            border: 1px solid #ccc;
+            padding: 20px;
+            width: 200px; /* Fixed size for the product card */
+            text-align: center;
+        }
+
+        /* Style for forms and buttons */
+        form input {
+            margin-bottom: 10px;
+            padding: 8px;
+            width: 200px;
+        }
+
+        form button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #45a049;
+        }
+
+        /* Center Payment Method Section */
+        #paymentMethodsSection {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Grocery 24/7</h1>
+        <nav>
+            <button id="productsBtn">Products</button>
+            <button id="cartBtn">Cart</button>
+            <button id="checkoutBtn">Checkout</button>
+        </nav>
+        <div id="searchBar">
+            <input type="text" id="searchInput" placeholder="Search for products...">
+        </div>
+    </header>
+
+    <!-- Pop-up Message (this will appear in the top-right corner) -->
+    <div id="popup" class="popup hidden">
+        <p id="popupMessage"></p>
+    </div>
+
+    <main>
+        <!-- Product List Section -->
+        <section id="productListSection" class="section">
+            <h2>Available Products</h2>
+            <div id="productList" class="grid-container">
+                <!-- Products will be dynamically added here -->
+            </div>
+        </section>
+
+        <!-- Cart Section -->
+        <section id="cartSection" class="section hidden">
+            <h2>Your Cart</h2>
+            <ul id="cartItems"></ul>
+          <p>Total Price: ₹<span id="totalPrice">0.00</span></p>
+        </section>
+
+        <!-- Checkout Section -->
+        <div id="checkoutSection" style="display:none;">
+            <h2>Checkout</h2>
+            <ul id="checkoutItems"></ul>
+            <p id="checkoutTotal"></p>
+            <button onclick="proceedToPayment()">Proceed to Payment</button>
+
+            <!-- Payment Methods Section (Initially Hidden) -->
+            <div id="paymentMethodsSection" style="display:none;">
+                <h3>Select Payment Method</h3>
+                <button onclick="showPaymentForm('creditCard')">Credit Card</button>
+                <button onclick="showPaymentForm('paypal')">PayPal</button>
+
+                <!-- Credit Card Form -->
+                <div id="creditCardForm" style="display:none;">
+                    <h4>Credit Card Payment</h4>
+                    <form id="creditCardPaymentForm">
+                        <label for="cardNumber">Card Number:</label>
+                        <input type="text" id="cardNumber" name="cardNumber" required><br>
+
+                        <label for="expiryDate">Expiry Date:</label>
+                        <input type="month" id="expiryDate" name="expiryDate" required><br>
+
+                        <label for="cvv">CVV:</label>
+                        <input type="text" id="cvv" name="cvv" required><br>
+
+                        <button type="submit">Pay Now</button>
+                    </form>
+                </div>
+
+                <!-- PayPal Form -->
+                <div id="paypalForm" style="display:none;">
+                    <h4>PayPal Payment</h4>
+                    <form id="paypalPaymentForm">
+                        <label for="paypalEmail">PayPal Email:</label>
+                        <input type="email" id="paypalEmail" name="paypalEmail" required><br>
+
+                        <button type="submit">Pay with PayPal</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+ <script>
+        // Function to show a pop-up message
+        function showPopup(message) {
+            const popup = document.getElementById('popup');
+            const popupMessage = document.getElementById('popupMessage');
+            popupMessage.innerText = message;
+            popup.classList.add('show');
+
+            // Hide the popup after 3 seconds
+            setTimeout(() => {
+                popup.classList.remove('show');
+            }, 3000);
+        }
+
+        // Function to proceed to payment
+        function proceedToPayment() {
+            showPopup("Please select a payment method.");
+
+            // Show payment options
+            document.getElementById('paymentMethodsSection').style.display = "block";
+        }
+
+        // Function to show the payment form based on the selected method
+        function showPaymentForm(paymentMethod) {
+            // Hide both forms initially
+            document.getElementById('creditCardForm').style.display = "none";
+            document.getElementById('paypalForm').style.display = "none";
+
+            // Display the selected payment form
+            if (paymentMethod === 'creditCard') {
+                document.getElementById('creditCardForm').style.display = "block";
+            } else if (paymentMethod === 'paypal') {
+                document.getElementById('paypalForm').style.display = "block";
+            }
+        }
+
+        // Function to display cart items and total
+        function displayCart() {
+            const cartItemsList = document.getElementById('cartItems');
+            const totalPriceElement = document.getElementById('totalPrice');
+            cartItemsList.innerHTML = ''; // Clear existing items
+
+            let total = 0;
+            cartItems.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.name} - ₹${item.price}`;
+                cartItemsList.appendChild(li);
+                total += item.price;
+            });
+
+            totalPriceElement.textContent = total;
+        }
+
+        // Display cart when clicking on Cart button
+        document.getElementById('cartBtn').addEventListener('click', () => {
+            document.getElementById('checkoutSection').style.display = "block";
+            displayCart();
+        });
+    </script>
+
+    <script src="JS/script.js"></script>
+</body>
+</html>
